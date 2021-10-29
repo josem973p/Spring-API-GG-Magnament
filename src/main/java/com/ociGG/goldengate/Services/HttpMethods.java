@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+
 
 @Service
 public class HttpMethods {
@@ -18,7 +20,7 @@ public class HttpMethods {
     @Autowired
     MyTrustManager myTrustManager = new MyTrustManager();
 
-    public static String peticionHttpGet(String urlParaVisitar, String user , String password) throws Exception {
+    public  String peticionHttpGet(String urlParaVisitar, String user , String password) throws Exception {
         // Esto es lo que vamos a devolver
         StringBuilder resultado = new StringBuilder();
         // Crear un objeto de tipo URL
@@ -61,5 +63,6 @@ public class HttpMethods {
 
         return resultado.toString();
     }
+
 
 }

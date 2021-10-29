@@ -22,15 +22,15 @@ public class ExtractController {
     @CrossOrigin
     @GetMapping("/listExtract")
     public String getReplicats() throws Exception {
-        String url = CredentialsConfig.credentials.get(0).getUrl();
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
         System.out.println(url);
         StringBuilder sb = new StringBuilder ();
 
-        sb.append(url).append("/extract/listExtract");
+        sb.append(url).append("/services/v2/extracts");
         String urlfinal = sb.toString();
         System.out.println(urlfinal);
 
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/extracts",CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
