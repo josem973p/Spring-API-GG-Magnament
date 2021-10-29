@@ -40,7 +40,10 @@ public class CredentialsConfig {
     }
 
 
-    public static void prueba(){}
+    public  void setParam(String parametro){
+        credentials.get(0).setParametro(parametro);
+
+    }
 
 
     public static List<BaseEntitieData> getCredentials() {

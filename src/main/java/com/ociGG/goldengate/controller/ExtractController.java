@@ -15,13 +15,15 @@ public class ExtractController {
 
     @Autowired
     HttpMethods httpMethods = new HttpMethods();
+    @Autowired
+    CredentialsConfig credentialsConfig = new CredentialsConfig();
 
 
 
 
     @CrossOrigin
     @GetMapping("/listExtract")
-    public String getReplicats() throws Exception {
+    public String getExtracts() throws Exception {
         String url = CredentialsConfig.getCredentials().get(0).getUrl();
         System.out.println(url);
         StringBuilder sb = new StringBuilder ();
@@ -50,23 +52,53 @@ public class ExtractController {
     @CrossOrigin
     @GetMapping("/ListReport")
     public String getReplicatReport() throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/extracts/EDEM0/info/reports",CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/extracts/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro()).append("/info/reports");
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
 
     @CrossOrigin
     @GetMapping("/extractDetail")
-    public String getReplicatDetail(@RequestBody BaseEntitieData baseEntitieData) throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/extracts/EDEM0",baseEntitieData.getUser(),baseEntitieData.getPassword());
+    public String getReplicatDetail() throws Exception {
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/extracts/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro());
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
 
     @CrossOrigin
     @GetMapping("/extractStatus")
-    public String getReplicatStatus(@RequestBody BaseEntitieData baseEntitieData) throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/extracts/EDEM0/info/status",baseEntitieData.getUser(),baseEntitieData.getPassword());
+    public String getReplicatStatus() throws Exception {
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/extracts/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro()).append("/info/status");
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }

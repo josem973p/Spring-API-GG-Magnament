@@ -29,4 +29,12 @@ public class CredentialsController {
         credentialsConfig.Credentials(Data.getUrl(),Data.getUser(),Data.getPassword());
 
     }
+
+    @CrossOrigin
+    @PostMapping("/param")
+    public void Param(@RequestBody BaseEntitieData Data) throws Exception {
+
+        CredentialsConfig.getCredentials().get(0).setParametro(Data.getParametro());
+
+    }
 }
