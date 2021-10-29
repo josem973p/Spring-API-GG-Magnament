@@ -32,16 +32,36 @@ public class ReplicatController {
 
     @CrossOrigin
     @GetMapping("/replicatListReport")
-    public String getReplicatReport(@RequestBody BaseEntitieData baseEntitieData) throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/replicats/RDEM0/info/reports",baseEntitieData.getUser(),baseEntitieData.getPassword());
+    public String getReplicatReport() throws Exception {
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/replicats/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro()).append("/info/reports");
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
 
     @CrossOrigin
     @GetMapping("/replicatDetail")
-    public String getReplicatDetail(@RequestBody BaseEntitieData baseEntitieData) throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/replicats/RDEM0",baseEntitieData.getUser(),baseEntitieData.getPassword());
+    public String getReplicatDetail() throws Exception {
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/replicats/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro());
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
@@ -49,8 +69,18 @@ public class ReplicatController {
 
     @CrossOrigin
     @GetMapping("/replicatStatus")
-    public String getReplicatStatus(@RequestBody BaseEntitieData baseEntitieData) throws Exception {
-        String result=   httpMethods.peticionHttpGet("https://147.154.7.27/services/v2/replicats/RDEM0/info/status",baseEntitieData.getUser(),baseEntitieData.getPassword());
+    public String getReplicatStatus() throws Exception {
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/replicats/");
+        sb.append(CredentialsConfig.getCredentials().get(0).getParametro()).append("/info/status");
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
