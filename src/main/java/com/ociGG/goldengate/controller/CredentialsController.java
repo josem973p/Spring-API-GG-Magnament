@@ -1,7 +1,9 @@
 package com.ociGG.goldengate.controller;
 
 import com.ociGG.goldengate.Config.CredentialsConfig;
+import com.ociGG.goldengate.Config.ParamsConfig;
 import com.ociGG.goldengate.Entities.BaseEntitieData;
+import com.ociGG.goldengate.Entities.Params;
 import com.ociGG.goldengate.Services.HttpMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,9 @@ public class CredentialsController {
     CredentialsConfig credentialsConfig = new CredentialsConfig();
 
 
+    ParamsConfig paramsConfig = new ParamsConfig();
+
+
 
     @CrossOrigin
     @PostMapping
@@ -35,6 +40,14 @@ public class CredentialsController {
     public void Param(@RequestBody BaseEntitieData Data) throws Exception {
 
         CredentialsConfig.getCredentials().get(0).setParametro(Data.getParametro());
+
+    }
+
+    @CrossOrigin
+    @PostMapping("/taskParams")
+    public void taskParams(@RequestBody Params Data) throws Exception {
+
+        paramsConfig.setParams(Data.getSchema(),Data.getName(),Data.getProcessName(),Data.getProcessType());
 
     }
 }
