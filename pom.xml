@@ -74,6 +74,12 @@
 			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-gson</artifactId>
+			<version>11.7</version>
+		</dependency>
+
 	</dependencies>
 
 

@@ -1,5 +1,6 @@
 package com.ociGG.goldengate.Services;
 
+import com.ociGG.goldengate.Config.CredentialsConfig;
 import com.ociGG.goldengate.Config.MyTrustManager;
 import com.ociGG.goldengate.Config.ParamsConfig;
 import com.ociGG.goldengate.Entities.Params;
@@ -19,8 +20,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -36,19 +36,15 @@ public class HttpMethods {
 
     @Autowired
     MyTrustManager myTrustManager = new MyTrustManager();
+    CredentialsConfig credentialsConfig = new CredentialsConfig();
 
     public  String peticionHttpGet(String urlParaVisitar, String user , String password) throws Exception {
-        // Esto es lo que vamos a devolver
-        StringBuilder resultado = new StringBuilder();
-        // Crear un objeto de tipo URL
 
-        System.out.println("esta es la url: "+urlParaVisitar);
+        StringBuilder resultado = new StringBuilder();
 
         URL url = new URL(urlParaVisitar.toString());
-
         MyTrustManager.disableSSL();
 
-        System.out.println("dentro del metodo ");
         Authenticator au = new Authenticator() {
             @Override
             protected PasswordAuthentication
@@ -59,27 +55,180 @@ public class HttpMethods {
         };
 
         Authenticator.setDefault(au);
-        // Abrir la conexión e indicar que será de tipo GET
+
         HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
 
         conexion.setRequestMethod("GET");
-
-        // Búferes para leer
+        conexion.setRequestProperty("Content-Type",
+                "application/json");
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
             String linea;
-            // Mientras el BufferedReader se pueda leer, agregar contenido a resultado
             while ((linea = rd.readLine()) != null) {
                 resultado.append(linea);
             }
-            // Cerrar el BufferedReader
             rd.close();
-            // Regresar resultado, pero como cadena, no como StringBuilder
-
 
 
         return resultado.toString();
     }
+
+    //------------------------METODO GET PARA EXTRACT Y REPLICAT --------------------------------------------
+
+    public  String GetExtractAndReplicats(String urlParaVisitar, String user , String password) throws Exception {
+
+        StringBuilder resultado = new StringBuilder();
+
+        URL url = new URL(urlParaVisitar.toString());
+        MyTrustManager.disableSSL();
+
+        Authenticator au = new Authenticator() {
+            @Override
+            protected PasswordAuthentication
+            getPasswordAuthentication() {
+                return new PasswordAuthentication
+                        (user, password.toCharArray());
+            }
+        };
+
+        Authenticator.setDefault(au);
+
+        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+
+        conexion.setRequestMethod("GET");
+        conexion.setRequestProperty("Content-Type",
+                "application/json");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+        String linea;
+        while ((linea = rd.readLine()) != null) {
+            resultado.append(linea);
+        }
+        rd.close();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+
+
+        StringTokenizer st = new StringTokenizer(resultado.toString());
+        stringBuilder.append("{ ");
+
+        while (st.hasMoreTokens()) {
+
+
+            if (st.nextToken().equals("\"name\":")){
+                stringBuilder.append("\"name\": ").append(st.nextToken()).append(" , ");
+
+            }
+
+        }
+        int size =stringBuilder.length();
+
+        stringBuilder.replace(size-1,size-1," }");
+        System.out.println(stringBuilder.toString());
+        stringBuilder.deleteCharAt(size);
+
+        return stringBuilder.toString();
+    }
+    //------------------------METODO GET PARA status del EXTRACT Y REPLICAT --------------------------------------------
+
+    public  String GetStatusExtractAndReplicats(String urlParaVisitar, String user , String password ,List<String> datos,  int iterator) throws Exception {
+
+        StringBuilder resultado = new StringBuilder();
+
+        URL url = new URL(urlParaVisitar.toString());
+        MyTrustManager.disableSSL();
+
+        Authenticator au = new Authenticator() {
+            @Override
+            protected PasswordAuthentication
+            getPasswordAuthentication() {
+                return new PasswordAuthentication
+                        (user, password.toCharArray());
+            }
+        };
+
+        Authenticator.setDefault(au);
+
+        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+
+        conexion.setRequestMethod("GET");
+        conexion.setRequestProperty("Content-Type",
+                "application/json");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+        String linea;
+        while ((linea = rd.readLine()) != null) {
+            resultado.append(linea);
+        }
+        rd.close();
+
+        resultado.delete(0,350);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+      //  stringBuilder.append("{ \"name\": \"").append(CredentialsConfig.getCredentials().get(0).getParametro())
+          //      .append("\",");
+
+     //   StringTokenizer name = new StringTokenizer(datos);
+    //    while (name.hasMoreTokens()) {
+    //        if (name.nextToken().equals("\"name\":")) {
+     //           stringBuilder.append("\"name\":").append(name.nextToken());
+      //          break;
+      //      }
+    //    }
+
+        stringBuilder.append("{ ");
+            stringBuilder.append("\"name\":").append(datos.get(iterator));
+
+
+
+
+        StringTokenizer status = new StringTokenizer(resultado.toString());
+        while (status.hasMoreTokens()) {
+            if (status.nextToken().equals("\"status\":")) {
+                stringBuilder.append("\"status\":").append(status.nextToken());
+                break;
+            }
+        }
+        StringTokenizer lastStarted = new StringTokenizer(resultado.toString());
+        while (lastStarted.hasMoreTokens()) {
+            if (lastStarted.nextToken().equals("\"lastStarted\":")) {
+                stringBuilder.append("\"lastStarted\":").append(lastStarted.nextToken());
+                break;
+            }
+        }
+        StringTokenizer lag = new StringTokenizer(resultado.toString());
+        while (lag.hasMoreTokens()) {
+            if (lag.nextToken().equals("\"lag\":")) {
+                stringBuilder.append("\"lag\":").append(lag.nextToken());
+                break;
+            }
+        }
+        StringTokenizer sinceLagReported = new StringTokenizer(resultado.toString());
+        while (sinceLagReported.hasMoreTokens()) {
+            if (sinceLagReported.nextToken().equals("\"sinceLagReported\":")) {
+                stringBuilder.append("\"sinceLagReported\":").append(sinceLagReported.nextToken());
+                break;
+            }
+        }
+        StringTokenizer position = new StringTokenizer(resultado.toString());
+        while (position.hasMoreTokens()) {
+            if (position.nextToken().equals("\"position\":")) {
+                stringBuilder.append("\"position\":").append(position.nextToken()).append(",");
+                break;
+            }
+        }
+        int size =stringBuilder.length();
+
+        stringBuilder.replace(size-1,size-1,"}");
+        System.out.println(stringBuilder.toString());
+        stringBuilder.deleteCharAt(size);
+
+        return stringBuilder.toString();
+    }
+
+    //_________________________________________METODO POST_______________________________________________
 
     ParamsConfig paramsConfig = new ParamsConfig();
 
@@ -101,40 +250,12 @@ public class HttpMethods {
 
          Authenticator.setDefault(au);
 
-         Map<String, Object> params = new LinkedHashMap<>();
-          //   System.out.println(ParamsConfig.getParamsList().get(0).getSchema());
-         //    params.put("$schema",ParamsConfig.getParamsList().get(0).getSchema());
-
-
-             System.out.println(ParamsConfig.getParamsList().get(0).getName());
-             params.put("name", ParamsConfig.getParamsList().get(0).getName());
-
-
-             System.out.println( ParamsConfig.getParamsList().get(0).getProcessName());
-             params.put("processName",  ParamsConfig.getParamsList().get(0).getProcessName());
-
-
-             System.out.println(  ParamsConfig.getParamsList().get(0).getProcessType());
-             params.put("processType",  ParamsConfig.getParamsList().get(0).getProcessType());
-
              StringBuilder postData = new StringBuilder();
 
              postData.append("{\"name\":\"").append(ParamsConfig.getParamsList().get(0).getName())
                      .append("\",\"processName\":\"").append(ParamsConfig.getParamsList().get(0).getProcessName())
                      .append("\",\"processType\":\"").append( ParamsConfig.getParamsList().get(0).getProcessType())
                      .append("\"}");
-       //  System.out.println("json a enviar : "+postData.toString());
-         /**
-             for (Map.Entry<String, Object> param : params.entrySet()) {
-                 if (postData.length() != 0)
-                     postData.append('{');
-                 postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                 postData.append('=');
-                 postData.append(URLEncoder.encode(String.valueOf(param.getValue()),
-                         "UTF-8"));
-
-             }
-          **/
 
          System.out.println("este es la cadena del map"+postData.toString());
              byte[] postDataBytes = postData.toString().getBytes("UTF-8");
@@ -164,7 +285,66 @@ public class HttpMethods {
              return resultado.toString();
      }
 
+    //_____________Metodo Para  El DataTable______________________________________
 
+
+    public String   data(String extracts) throws Exception {
+
+        System.out.println("hola soy la data "+extracts);
+
+        List<String> extractos = new ArrayList<String>();
+
+
+        StringTokenizer st = new StringTokenizer(extracts.toString());
+        while (st.hasMoreTokens()) {
+
+            if (st.nextToken().equals("\"name\":")) {
+                StringBuilder palabra = new StringBuilder (st.nextToken());
+                palabra.deleteCharAt(0);
+                int tam =palabra.length();
+                palabra.deleteCharAt(tam-1);
+                System.out.println(palabra.toString());
+                extractos.add(palabra.toString());
+
+            }
+        }
+
+
+        System.out.println(extractos.get(0));
+        System.out.println(extractos.get(1));
+        System.out.println(extractos.get(2));
+
+        StringBuilder datos = new StringBuilder ();
+        datos.append("{");
+
+        System.out.println(extractos.size());
+        for (int i=0; i<extractos.size();i++){
+
+            String url = CredentialsConfig.getCredentials().get(0).getUrl();
+            System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+            StringBuilder sb = new StringBuilder ();
+
+            sb.append(url).append("/services/v2/extracts/");
+            sb.append(extractos.get(i)).append("/info/status");
+            String urlfinal = sb.toString();
+            System.out.println(urlfinal);
+
+
+           String extracto = GetStatusExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword(),extractos,i);
+            datos.append(extracto).append(",");
+
+        }
+        int r = datos.length();
+
+        datos.deleteCharAt(r-1).append("}");
+
+
+
+
+
+
+        return datos.toString();
+    }
 
 
 

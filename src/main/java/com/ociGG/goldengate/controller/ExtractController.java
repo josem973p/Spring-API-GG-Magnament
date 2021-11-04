@@ -32,7 +32,7 @@ public class ExtractController {
         String urlfinal = sb.toString();
         System.out.println(urlfinal);
 
-        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+        String result=   httpMethods.GetExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
@@ -103,4 +103,34 @@ public class ExtractController {
         return result;
     }
 
+    @CrossOrigin
+    @GetMapping("/data")
+    public String getReplicatStatusData() throws Exception {
+
+     //   String url = CredentialsConfig.getCredentials().get(0).getUrl();
+   //     System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
+    //    StringBuilder sb = new StringBuilder ();
+
+     //   sb.append(url).append("/services/v2/extracts/");
+      //  sb.append(CredentialsConfig.getCredentials().get(0).getParametro()).append("/info/status");
+    //    String urlfinal = sb.toString();
+       // System.out.println(urlfinal);
+
+
+        String url = CredentialsConfig.getCredentials().get(0).getUrl();
+        System.out.println(url);
+        StringBuilder sb = new StringBuilder ();
+
+        sb.append(url).append("/services/v2/extracts");
+        String urlfinal = sb.toString();
+        System.out.println(urlfinal);
+
+        String result=   httpMethods.GetExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+
+        System.out.println(result);
+
+        String datos = httpMethods.data(result);
+
+        return datos;
+    }
 }

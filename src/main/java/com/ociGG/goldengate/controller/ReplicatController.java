@@ -25,7 +25,7 @@ public class ReplicatController {
         String urlfinal = sb.toString();
         System.out.println(urlfinal);
 
-        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+        String result=   httpMethods.GetExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
         return result;
     }
