@@ -132,7 +132,7 @@ public class HttpMethods {
     }
     //------------------------METODO GET PARA status del EXTRACT Y REPLICAT --------------------------------------------
 
-    public  String GetStatusExtractAndReplicats(String urlParaVisitar, String user , String password ,List<String> datos,  int iterator) throws Exception {
+    public  String GetStatusExtractAndReplicats(String urlParaVisitar, String user , String password ,List<String> datos,  int iterator, String type) throws Exception {
 
         StringBuilder resultado = new StringBuilder();
 
@@ -179,7 +179,7 @@ public class HttpMethods {
     //    }
 
         stringBuilder.append("{ ");
-            stringBuilder.append("\"name\":").append(datos.get(iterator));
+            stringBuilder.append("\"name\": \"").append(datos.get(iterator)).append("\",");
 
 
 
@@ -215,7 +215,14 @@ public class HttpMethods {
         StringTokenizer position = new StringTokenizer(resultado.toString());
         while (position.hasMoreTokens()) {
             if (position.nextToken().equals("\"position\":")) {
-                stringBuilder.append("\"position\":").append(position.nextToken()).append(",");
+
+                if (type.equals("extract")){
+                    stringBuilder.append("\"position\":").append(position.nextToken()).append(",");
+                }else{
+                    stringBuilder.append("\"position\":").append("0").append(",");
+                }
+
+
                 break;
             }
         }
@@ -288,7 +295,7 @@ public class HttpMethods {
     //_____________Metodo Para  El DataTable______________________________________
 
 
-    public String   data(String extracts) throws Exception {
+    public String   data(String extracts,String type) throws Exception {
 
         System.out.println("hola soy la data "+extracts);
 
@@ -315,7 +322,7 @@ public class HttpMethods {
         System.out.println(extractos.get(2));
 
         StringBuilder datos = new StringBuilder ();
-        datos.append("{");
+        datos.append("[");
 
         System.out.println(extractos.size());
         for (int i=0; i<extractos.size();i++){
@@ -324,25 +331,28 @@ public class HttpMethods {
             System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
             StringBuilder sb = new StringBuilder ();
 
-            sb.append(url).append("/services/v2/extracts/");
+            if (type.equals("extract")){
+                sb.append(url).append("/services/v2/extracts/");
+            }else{
+                sb.append(url).append("/services/v2/replicats/");
+            }
+
+
             sb.append(extractos.get(i)).append("/info/status");
             String urlfinal = sb.toString();
             System.out.println(urlfinal);
 
 
-           String extracto = GetStatusExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword(),extractos,i);
+           String extracto = GetStatusExtractAndReplicats(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword(),extractos,i,type);
             datos.append(extracto).append(",");
 
         }
         int r = datos.length();
 
-        datos.deleteCharAt(r-1).append("}");
+        datos.deleteCharAt(r-1).append("]");
 
 
-
-
-
-
+        System.out.println(datos.toString());
         return datos.toString();
     }
 

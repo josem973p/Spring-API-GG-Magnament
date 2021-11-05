@@ -129,7 +129,7 @@ public class ExtractController {
 
         System.out.println(result);
 
-        String datos = httpMethods.data(result);
+        String datos = httpMethods.data(result,"extract");
 
         return datos;
     }
