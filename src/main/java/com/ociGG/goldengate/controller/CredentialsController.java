@@ -40,6 +40,8 @@ public class CredentialsController {
     public void Param(@RequestBody BaseEntitieData Data) throws Exception {
 
         CredentialsConfig.getCredentials().get(0).setParametro(Data.getParametro());
+        System.out.println("hola soy el parametro que enviaste"+Data.getParametro());
+        System.out.println("este es el parametro que se estalecio"+CredentialsConfig.getCredentials().get(0).getParametro());
 
     }
 

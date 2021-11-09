@@ -33,19 +33,38 @@ public class LogsController {
         int tam =stringBuilder.length();
         stringBuilder.delete(tam-6,tam);
          String[] logs;
+        String[] values;
          String cad = stringBuilder.toString();
-        System.out.println(cad);
-        String hola = "hola-manuel-como-estas";
-     //   String separador = Pattern.quote(".");
-         logs= cad.split("[a-z]\\.[0-9]");
 
-        System.out.println(logs.length);
+         logs= cad.split("[a-zA-Z]\\.[0-9]");
+        String cadena;
+        StringBuilder json = new StringBuilder ();
+        json.append("[ ");
+        System.out.println("el tamaño del  arreglo es : "+logs.length);
          for (int i = 0;i< logs.length;i++){
-             System.out.println(logs[i]);
+             StringBuilder Builder = new StringBuilder ();
+            cadena= Builder.append("2").append(logs[i]).toString();
+             logs[i]= cadena;
+           //  System.out.println("mensaje "+i+"  "+logs[i]);
+             values= logs[i].split("0000");
+             for (int j=0;j<values.length;j++){
+                 System.out.println(j+"valor de cadena "+values[j]);
+             }
+             json.append(" { \"date\": \"").append(values[0]).append("\",");
+             json.append("\"message\": \"").append(values[1]).append("\" },");
+
+
+            // System.out.println(logs[i]);
          }
+         int size = json.length();
+         json.deleteCharAt(size-1);
+         json.append("]");
 
 
-        return stringBuilder.toString();
+        System.out.println(json.toString());
+
+
+        return json.toString();
     }
 
 }

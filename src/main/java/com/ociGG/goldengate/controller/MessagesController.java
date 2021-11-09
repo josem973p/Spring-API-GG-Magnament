@@ -27,6 +27,42 @@ public class MessagesController {
         System.out.println(urlfinal);
         String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
 
-        return result;
+        StringBuilder builder = new StringBuilder (result);
+        builder.delete(0,775);
+        int size = builder.length();
+        builder.delete(size-55,size);
+        int size2 = builder.length()/1000;
+
+
+        String[] logs;
+        String[] values;
+        String cadena;
+        StringBuilder json = new StringBuilder ();
+        json.append("[ ");
+
+        String cad = builder.toString();
+
+        logs= cad.split("\\.\",");
+        System.out.println(logs.length);
+
+
+        for (int i=0;i<500;i++){
+            System.out.println(logs[i]);
+           // values= cad.split("0000");
+          //  json.append(" { \"date\": \"").append(values[0]).append("\",");
+          //  json.append("\"message\": \"").append(values[1]).append("\" },");
+         ///   if (i==499){
+          //      json.append("\"message\": \"").append(values[1]).append("\" }");
+            }
+
+
+
+      //  }
+
+        json.append("]");
+
+
+        System.out.println(json.toString());
+        return builder.toString();
     }
 }
