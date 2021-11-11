@@ -107,9 +107,6 @@ public class HttpMethods {
         rd.close();
 
         StringBuilder stringBuilder = new StringBuilder();
-
-
-
         StringTokenizer st = new StringTokenizer(resultado.toString());
         stringBuilder.append("{ ");
 
