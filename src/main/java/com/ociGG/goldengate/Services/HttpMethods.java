@@ -165,16 +165,7 @@ public class HttpMethods {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-      //  stringBuilder.append("{ \"name\": \"").append(CredentialsConfig.getCredentials().get(0).getParametro())
-          //      .append("\",");
 
-     //   StringTokenizer name = new StringTokenizer(datos);
-    //    while (name.hasMoreTokens()) {
-    //        if (name.nextToken().equals("\"name\":")) {
-     //           stringBuilder.append("\"name\":").append(name.nextToken());
-      //          break;
-      //      }
-    //    }
 
         stringBuilder.append("{ ");
             stringBuilder.append("\"name\": \"").append(datos.get(iterator)).append("\",");
@@ -408,8 +399,9 @@ public class HttpMethods {
 
     //__________________ Metodo para validar el estado de los replicats____________________________
 
-    public  String peticionStatus(String urlParaVisitar, String user , String password) throws Exception {
+    public  static  String peticionStatus(String urlParaVisitar, String user , String password) throws Exception {
 
+         /**
         StringBuilder resultado = new StringBuilder();
 
         URL url = new URL(urlParaVisitar.toString());
@@ -439,10 +431,24 @@ public class HttpMethods {
         }
         rd.close();
 
+        resultado.delete(0,350);
 
-        return resultado.toString();
+          **/
+
+        String resultado2 = "{ \"$schema\": \"api:standardResponse\",  \"links\": [  {  \"href\": \"http://localhost:11001/services/v2/replicats/REP2/info/status\",  \"mediaType\":\"application/json\",  \"rel\":\"canonical\" }, { \"href\":\"http://localhost:11001/services/v2/replicats/REP2/info/status\",\"mediaType\":\"application/json\", \"rel\": \"self\"   }, { \"href\":\"http://localhost:11001/services/v2/metadata-catalog/replicatStatus\", \"mediaType\":\"application/schema+json\",\"rel\":\"describedby\" } ], \"messages\":[], \"response\":{ \"$schema\":\"ogg:replicatStatus\", \"lag\":0, \"lastStarted\":\"2017-12-14T12:43:59.181Z\" \"position\":{\"name\":\"X2\",\"offset\":3987,\"path\": \"/u02/ogg/Local/var/lib/data\", \"sequence\":0 }, \"processId\":1699, \"sinceLagReported\":2, \"status\": \"running\"  }  }";
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        StringTokenizer status = new StringTokenizer(resultado2.toString());
+        while (status.hasMoreTokens()) {
+            if (status.nextToken().equals("\"status\":")) {
+                stringBuilder.append(status.nextToken());
+                break;
+            }
+        }
+
+        return stringBuilder.toString();
     }
-
 
 
 }

@@ -74,4 +74,15 @@ public class StatsController {
             return json.toString();
       //  return stringBuilder.toString();
     }
+
+
+    public String getRepStatus(String urlfinal) throws Exception {
+
+
+
+        String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
+
+        return result;
+    }
+
 }
