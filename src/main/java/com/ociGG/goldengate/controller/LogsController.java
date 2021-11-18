@@ -21,12 +21,12 @@ public class LogsController {
     @GetMapping("/criticalEvents")
     public String getReplicats() throws Exception {
         String url = CredentialsConfig.getCredentials().get(0).getUrl();
-        System.out.println(url);
+      //  System.out.println(url);
         StringBuilder sb = new StringBuilder ();
 
         sb.append(url).append("/services/v2/logs/events");
         String urlfinal = sb.toString();
-        System.out.println(urlfinal);
+   //     System.out.println(urlfinal);
         String result=   httpMethods.peticionHttpGet(urlfinal,CredentialsConfig.credentials.get(0).getUser(),CredentialsConfig.credentials.get(0).getPassword());
         StringBuilder stringBuilder = new StringBuilder (result);
         stringBuilder.delete(0,5);
@@ -35,12 +35,15 @@ public class LogsController {
          String[] logs;
         String[] values;
          String cad = stringBuilder.toString();
+        System.out.println("___________CADENA RESPUESTA___________________");
+        System.out.println(cad);
+        System.out.println("_______________________________");
 
          logs= cad.split("[a-zA-Z]\\.[0-9]");
         String cadena;
         StringBuilder json = new StringBuilder ();
         json.append("[ ");
-        System.out.println("el tamaño del  arreglo es : "+logs.length);
+     //   System.out.println("el tamaño del  arreglo es : "+logs.length);
          for (int i = 0;i< logs.length;i++){
              StringBuilder Builder = new StringBuilder ();
             cadena= Builder.append("2").append(logs[i]).toString();
@@ -59,7 +62,7 @@ public class LogsController {
                      }
                  }
                  String ncad = aCaracteres.toString();
-                 System.out.println(values[1]);
+             //    System.out.println(values[1]);
                  json.append("\"message\": \"").append(ncad).append("\" },");
              }else{
 
@@ -74,7 +77,7 @@ public class LogsController {
          json.append("]");
 
 
-        System.out.println(json.toString());
+      //  System.out.println(json.toString());
 
 
         return json.toString();
@@ -124,7 +127,7 @@ public class LogsController {
 
                 for (int k=0;k< aCaracteres.length;k++){
                     if (aCaracteres[k]=='\"'){
-                        aCaracteres[k]='\'';
+                        aCaracteres[k]='^';
                     }
                 }
                 String ncad = aCaracteres.toString();

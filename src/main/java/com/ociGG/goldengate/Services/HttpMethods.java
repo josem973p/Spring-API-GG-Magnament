@@ -4,6 +4,7 @@ import com.ociGG.goldengate.Config.CredentialsConfig;
 import com.ociGG.goldengate.Config.MyTrustManager;
 import com.ociGG.goldengate.Config.ParamsConfig;
 import com.ociGG.goldengate.Entities.Params;
+import com.ociGG.goldengate.Entities.StatsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -239,7 +240,6 @@ public class HttpMethods {
      public String postData(String urlParaVisitar, String user , String password) throws IOException {
 
              URL url = new URL(urlParaVisitar);
-
        MyTrustManager.disableSSL();
 
 
@@ -351,6 +351,96 @@ public class HttpMethods {
 
         System.out.println(datos.toString());
         return datos.toString();
+    }
+
+
+    //______________________________________METODO PARA LOS STATS___________________________________________
+
+    public String getStatsData(String urlParaVisitar, String user , String password) throws IOException {
+
+        URL url = new URL(urlParaVisitar);
+        MyTrustManager.disableSSL();
+
+        Authenticator au = new Authenticator() {
+            @Override
+            protected PasswordAuthentication
+            getPasswordAuthentication() {
+                return new PasswordAuthentication
+                        (user, password.toCharArray());
+            }
+        };
+
+        Authenticator.setDefault(au);
+        StringBuilder postData = new StringBuilder();
+        StatsEntity statsEntity = new StatsEntity();
+        postData.append("{\"command\":\"").append(statsEntity.getCommand())
+                .append("\",\"arguments\":\"").append(statsEntity.getArguments())
+                .append("\"}");
+
+        System.out.println("este es la cadena del map"+postData.toString());
+        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type",
+                "application/json");
+        conn.setRequestProperty( "charset", "utf-8");
+        conn.setRequestProperty("Content-Length",
+                String.valueOf(postDataBytes.length));
+        conn.setDoOutput(true);
+        conn.getOutputStream().write(postDataBytes);
+
+
+        StringBuilder resultado = new StringBuilder();
+        //  System.out.println(conn.);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String linea;
+        // Mientras el BufferedReader se pueda leer, agregar contenido a resultado
+        while ((linea = rd.readLine()) != null) {
+            resultado.append(linea);
+        }
+        // Cerrar el BufferedReader
+        rd.close();
+
+        return resultado.toString();
+    }
+
+
+    //__________________ Metodo para validar el estado de los replicats____________________________
+
+    public  String peticionStatus(String urlParaVisitar, String user , String password) throws Exception {
+
+        StringBuilder resultado = new StringBuilder();
+
+        URL url = new URL(urlParaVisitar.toString());
+        MyTrustManager.disableSSL();
+
+        Authenticator au = new Authenticator() {
+            @Override
+            protected PasswordAuthentication
+            getPasswordAuthentication() {
+                return new PasswordAuthentication
+                        (user, password.toCharArray());
+            }
+        };
+
+        Authenticator.setDefault(au);
+
+        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+
+        conexion.setRequestMethod("GET");
+        conexion.setRequestProperty("Content-Type",
+                "application/json");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+        String linea;
+        while ((linea = rd.readLine()) != null) {
+            resultado.append(linea);
+        }
+        rd.close();
+
+
+        return resultado.toString();
     }
 
 

@@ -2,8 +2,10 @@ package com.ociGG.goldengate.controller;
 
 import com.ociGG.goldengate.Config.CredentialsConfig;
 import com.ociGG.goldengate.Config.ParamsConfig;
+import com.ociGG.goldengate.Config.StatsEntityConfig;
 import com.ociGG.goldengate.Entities.BaseEntitieData;
 import com.ociGG.goldengate.Entities.Params;
+import com.ociGG.goldengate.Entities.StatsEntity;
 import com.ociGG.goldengate.Services.HttpMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,8 @@ public class CredentialsController {
 
 
     ParamsConfig paramsConfig = new ParamsConfig();
+
+    StatsEntityConfig statsEntityConfig = new StatsEntityConfig();
 
 
 
@@ -52,4 +56,13 @@ public class CredentialsController {
         paramsConfig.setParams(Data.getSchema(),Data.getName(),Data.getProcessName(),Data.getProcessType());
 
     }
+
+    @CrossOrigin
+    @PostMapping("/statsParams")
+    public void statsParams(@RequestBody StatsEntity Data) throws Exception {
+        statsEntityConfig.setParams(Data.getParam());
+
+    }
+
+
 }

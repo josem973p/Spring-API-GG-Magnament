@@ -161,7 +161,6 @@ public class ReplicatController {
         return result;
     }
 
-
     @CrossOrigin
     @GetMapping("/data")
     public String getReplicatStatusData() throws Exception {
