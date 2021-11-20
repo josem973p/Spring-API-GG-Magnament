@@ -17,7 +17,7 @@ import java.util.Map;
 public class kafkaConfiguration {
 
     private Map<String, Object> consumerProps() { Map<String, Object>props=new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,"b-2.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092,b-4.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092,b-1.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,"107.180.100.184:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG,"group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,StringDeserializer.class);
@@ -27,7 +27,7 @@ public class kafkaConfiguration {
 
 
     private Map<String, Object> producerProps() { Map<String, Object> props=new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"b-2.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092,b-4.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092,b-1.kafka-cluster.xlrzya.c6.kafka.us-east-2.amazonaws.com:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"107.180.100.184:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class);
         return props;

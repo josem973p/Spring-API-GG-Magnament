@@ -15,13 +15,19 @@ import com.oracle.bmc.goldengate.requests.StartDeploymentRequest;
 import com.oracle.bmc.goldengate.requests.StopDeploymentRequest;
 import com.oracle.bmc.goldengate.responses.StartDeploymentResponse;
 import com.oracle.bmc.goldengate.responses.StopDeploymentResponse;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 @EnableScheduling
@@ -33,6 +39,10 @@ public class GoldengateApplication {
 	@Autowired
 	HttpMethods httpMethods = new HttpMethods();
 
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
+
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
 	int conta =0;
 
@@ -50,8 +60,8 @@ public class GoldengateApplication {
 				ReplicatsEntity.llenalist();
 				conta++;
 			}
-**/
 
+**/
 			for (int i = 0; i < ReplicatsEntity.getreplicats().size(); i++) {
 				String url = CredentialsConfig.getCredentials().get(0).getUrl();
 				//System.out.println(CredentialsConfig.getCredentials().get(0).getParametro());
@@ -66,11 +76,14 @@ public class GoldengateApplication {
 
 				System.out.println("este es el estatus del proceso "+ReplicatsEntity.getreplicats().get(i)+": "+status);
 
+				StringBuilder message = new StringBuilder();
+				message.append("{ \"fecha \": \""+ dtf.format(LocalDateTime.now())+"\", ").append("\""+ReplicatsEntity.getreplicats().get(i)+"\":").append(" \""+status+"\" }");
+				kafkaTemplate.send("oci-topic", message.toString());
 			}
 		}
 
-
 	}
+
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(GoldengateApplication.class, args);

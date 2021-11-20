@@ -446,6 +446,9 @@ public class HttpMethods {
                 break;
             }
         }
+        stringBuilder.delete(0,1);
+        int tam = stringBuilder.length();
+        stringBuilder.delete(tam-1,tam);
 
         return stringBuilder.toString();
     }
