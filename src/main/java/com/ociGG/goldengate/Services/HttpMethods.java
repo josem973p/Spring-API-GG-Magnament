@@ -221,7 +221,12 @@ public class HttpMethods {
         System.out.println(stringBuilder.toString());
         stringBuilder.deleteCharAt(size);
 
+
+
+      //  String json = "[ { \"name\": \"REP\", \"status\": \"Started\", \"lastStarted\": \"222222222\", \"lag\": \"1\", \"sinceLagReported\": \"555555\", \"position\": \"45\" }, { \"name\": \"REP2\", \"status\": \"Started\", \"lastStarted\": \"222222222\", \"lag\": \"1\", \"sinceLagReported\": \"555555\", \"position\": \"45\" }, { \"name\": \"REP3\", \"status\": \"Started\", \"lastStarted\": \"222222222\", \"lag\": \"1\", \"sinceLagReported\": \"555555\", \"position\": \"45\" }, { \"name\": \"REP4\", \"status\": \"Started\", \"lastStarted\": \"222222222\", \"lag\": \"1\", \"sinceLagReported\": \"555555\", \"position\": \"45\" }";
+
         return stringBuilder.toString();
+       // return json;
     }
 
     //_________________________________________METODO POST_______________________________________________
@@ -304,11 +309,11 @@ public class HttpMethods {
             }
         }
 
-
+        /**
         System.out.println(extractos.get(0));
         System.out.println(extractos.get(1));
         System.out.println(extractos.get(2));
-
+**/
         StringBuilder datos = new StringBuilder ();
         datos.append("[");
 

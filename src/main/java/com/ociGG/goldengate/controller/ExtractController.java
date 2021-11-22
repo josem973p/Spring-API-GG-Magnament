@@ -197,6 +197,7 @@ public class ExtractController {
 
         String datos = httpMethods.data(result,"extract");
 
+        System.out.println("WWWWW"+ datos);
         return datos;
     }
 }

@@ -51,7 +51,7 @@ public class GoldengateApplication {
 	public void checkState() throws Exception {
 
 		if (!CredentialsConfig.credentials.isEmpty() ){
-			System.out.println("hola perros");
+			//System.out.println("hola perros");
 
 			//metodo de prueba para llenar solo una vez
 
